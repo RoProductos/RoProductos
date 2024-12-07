@@ -169,30 +169,32 @@
         </svg>
     </div>
 
-    <script>
-        window.onload = function () {
-            const loader = document.getElementById('loader');
-            const loginPanel = document.getElementById('login-panel');
-            const loginButton = document.getElementById('login-button');
+<script>
+    window.onload = function () {
+        const loader = document.getElementById('loader');
+        const loginPanel = document.getElementById('login-panel');
+        const loginButton = document.getElementById('login-button');
 
-            setTimeout(() => {
-                loader.style.animation = "fadeOut 1s ease forwards";
-                loader.addEventListener('animationend', () => loader.remove());
-            }, 4000);
+        // Safely remove loader after 4 seconds
+        setTimeout(() => {
+            loader.style.transition = "opacity 1s ease";
+            loader.style.opacity = "0"; // Fade out loader
+            setTimeout(() => loader.remove(), 1000); // Ensure loader is removed after fade
+        }, 4000);
 
-            loginButton.addEventListener('click', () => {
-                const notification = document.createElement('div');
-                notification.className = 'notification';
-                notification.textContent = "You are now in the homepage.";
-                document.body.appendChild(notification);
+        loginButton.addEventListener('click', () => {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = "You are now in the homepage.";
+            document.body.appendChild(notification);
 
-                loginPanel.style.animation = "fadeOut 1s ease forwards";
-                loginPanel.addEventListener('animationend', () => {
-                    loginPanel.remove();
-                    setTimeout(() => notification.remove(), 5000);
-                });
+            loginPanel.style.animation = "fadeOut 1s ease forwards";
+            loginPanel.addEventListener('animationend', () => {
+                loginPanel.remove();
+                setTimeout(() => notification.remove(), 5000); // Remove notification after 5s
             });
-        };
-    </script>
+        });
+    };
+</script>
 </body>
 </html>
