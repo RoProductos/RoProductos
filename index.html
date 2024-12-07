@@ -6,12 +6,12 @@
     <title>RoProductos Dashboard</title>
     <style>
         :root {
-            --primary: #1e293b; /* Dark Blue */
-            --secondary: #475569; /* Light Gray-Blue */
-            --accent: #38bdf8; /* Sky Blue */
-            --background: #0f172a; /* Navy Blue */
-            --light-mode-bg: #f1f5f9; /* Light Background */
-            --light-mode-text: #1e293b; /* Dark Text for Light Mode */
+            --primary: #1e293b;
+            --secondary: #475569;
+            --accent: #38bdf8;
+            --background: #0f172a;
+            --light-mode-bg: #f1f5f9;
+            --light-mode-text: #1e293b;
         }
 
         body {
@@ -45,12 +45,12 @@
 
         .option {
             margin-bottom: 15px;
-            padding: 10px 15px;
+            padding: 10px;
             background: var(--secondary);
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
             text-align: center;
+            transition: background 0.3s;
         }
 
         .option:hover {
@@ -61,36 +61,32 @@
             width: 80%;
             padding: 20px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         .content .grid {
             display: flex;
-            justify-content: space-between;
-            width: 80%;
+            flex-wrap: wrap;
             gap: 20px;
+            justify-content: center;
         }
 
         .card {
-            flex: 1;
-            padding: 20px;
+            padding: 15px;
             background: var(--secondary);
             border-radius: 10px;
+            width: calc(30% - 20px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s, color 0.3s;
+            text-align: center;
         }
 
         .card.light-mode {
             background: var(--light-mode-bg);
             color: var(--light-mode-text);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .card h3 {
-            margin-bottom: 15px;
+        .scrollable {
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .notification {
@@ -98,28 +94,18 @@
             top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--error);
+            background: var(--accent);
             color: white;
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 5px;
             font-size: 14px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.5s ease-in-out;
             z-index: 1000;
+            transition: top 0.5s;
         }
 
         .notification.show {
             top: 20px;
-        }
-
-        .toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toggle input[type="checkbox"] {
-            transform: scale(1.5);
         }
     </style>
 </head>
@@ -128,18 +114,13 @@
         <h2>RoProductos</h2>
         <div class="option" onclick="showHomepage()">Homepage</div>
         <div class="option" onclick="showSettings()">Settings</div>
-        <div class="option" onclick="toggleDropdown()">Apps</div>
-        <div id="dropdown" style="display: none; padding-left: 20px;">
-            <div class="option">Empty 1</div>
-            <div class="option">Empty 2</div>
-            <div class="option">Empty 3</div>
-        </div>
+        <div class="option" onclick="showApp()">JohnTheLeaker</div>
     </div>
     <div class="content">
         <div id="homepage" class="grid" style="display: none;">
             <div class="card">
                 <h3>About Us</h3>
-                <p>RoProductos provides the best tools for managing your Roblox assets seamlessly.</p>
+                <p>RoProductos provides tools to manage your Roblox assets.</p>
             </div>
             <div class="card">
                 <h3>Contact Us</h3>
@@ -149,54 +130,77 @@
         </div>
         <div id="settings" class="grid" style="display: none;">
             <div class="card">
-                <h3>Settings</h3>
-                <div class="toggle">
-                    <label for="light-mode-toggle">Light Mode</label>
-                    <input id="light-mode-toggle" type="checkbox" onclick="toggleLightMode()">
-                </div>
+                <h3>Light Mode</h3>
+                <input type="checkbox" onchange="toggleLightMode()"> Enable
+            </div>
+            <div class="card">
+                <h3>Notification Sounds</h3>
+                <input type="checkbox"> Enable
+            </div>
+            <div class="card">
+                <h3>Advanced Features</h3>
+                <input type="checkbox"> Enable
             </div>
         </div>
+        <div id="app" class="scrollable" style="display: none;">
+            <div class="grid" id="app-grid"></div>
+        </div>
     </div>
-
     <div id="notification" class="notification"></div>
 
     <script>
         const notification = document.getElementById('notification');
         const homepage = document.getElementById('homepage');
         const settings = document.getElementById('settings');
-        const dropdown = document.getElementById('dropdown');
+        const app = document.getElementById('app');
+        const appGrid = document.getElementById('app-grid');
 
         const showNotification = (message) => {
             notification.textContent = message;
             notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            setTimeout(() => notification.classList.remove('show'), 3000);
         };
 
         const showHomepage = () => {
             homepage.style.display = 'flex';
             settings.style.display = 'none';
+            app.style.display = 'none';
         };
 
         const showSettings = () => {
             homepage.style.display = 'none';
             settings.style.display = 'flex';
+            app.style.display = 'none';
         };
 
-        const toggleDropdown = () => {
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        const showApp = () => {
+            homepage.style.display = 'none';
+            settings.style.display = 'none';
+            app.style.display = 'block';
+            loadDatabase();
         };
 
         const toggleLightMode = () => {
             document.body.classList.toggle('light-mode');
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => card.classList.toggle('light-mode'));
+            document.querySelectorAll('.card').forEach(card => card.classList.toggle('light-mode'));
+        };
+
+        const loadDatabase = async () => {
+            appGrid.innerHTML = ''; // Clear grid
+            const response = await fetch('/database/database.txt');
+            const links = (await response.text()).split('\n').filter(Boolean);
+            links.forEach(link => {
+                const fileName = link.split('/').pop();
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<h3>${fileName}</h3><a href="${link}" target="_blank">Download</a>`;
+                appGrid.appendChild(card);
+            });
         };
 
         window.onload = () => {
             showHomepage();
-            showNotification("Welcome to RoProductos!");
+            showNotification('Welcome to RoProductos!');
         };
     </script>
 </body>
