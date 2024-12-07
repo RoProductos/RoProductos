@@ -3,62 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Helper</title>
+    <title>Enhanced Game Copier</title>
     <style>
         /* General Reset */
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            font-family: 'Arial', sans-serif;
-            background: #0f2027;
-            background: linear-gradient(120deg, #2c5364, #203a43, #0f2027);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: black;
+            color: white;
             height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             overflow: hidden;
-            color: #fff;
         }
 
-        /* Loader Animation */
-        @keyframes gradientMove {
+        /* Background Animation */
+        @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
         body {
+            background: linear-gradient(120deg, #1e3a8a, #00008b, #000000);
             background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
+            animation: gradientAnimation 15s ease infinite;
         }
 
+        /* Loader */
         #loader {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0f2027;
+            background: black;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
-            animation: fadeOut 1s ease-in 4s forwards;
         }
 
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
-        }
-
-        .loading-text {
-            font-size: 20px;
+        #loader-text {
+            font-size: 24px;
             margin-bottom: 15px;
-            color: #1db9c3;
+            color: #1e90ff;
+            animation: fadeIn 1.5s infinite;
         }
 
         .dots {
@@ -67,107 +60,156 @@
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
-            background: #1db9c3;
+            width: 12px;
+            height: 12px;
+            background-color: #1e90ff;
             border-radius: 50%;
-            animation: bounce 1.2s infinite ease-in-out;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Main Content */
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            display: none;
-            animation: fadeIn 1s ease-in 4s forwards;
+            animation: slideDots 1.5s infinite;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
-        .card h1 {
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.3s; }
+        .dot:nth-child(3) { animation-delay: 0.6s; }
+
+        /* Main Content */
+        .card {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
             margin-bottom: 20px;
-            font-size: 1.8em;
-            color: #1db9c3;
         }
 
-        .card input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #1db9c3;
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 1em;
+        /* Buttons Section */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .card input::placeholder {
-            color: #aaa;
-        }
-
-        .card button {
-            width: 100%;
-            padding: 10px;
-            background: #1db9c3;
+        button {
+            padding: 15px;
             border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 1em;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #1e90ff;
+            color: white;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             transition: background 0.3s ease;
         }
 
-        .card button:hover {
-            background: #17a2b8;
+        button:hover {
+            background: #00008b;
         }
 
-        /* Discord Button */
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
         .discord-btn {
+            background: #7289da;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #5865f2;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             cursor: pointer;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s;
         }
 
         .discord-btn:hover {
-            background: #7289da;
+            background: #5865f2;
         }
 
         .discord-btn svg {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             fill: white;
+        }
+
+        .discord-btn:hover::after {
+            content: 'Join our Communications Server';
+            position: absolute;
+            bottom: 80px;
+            right: 15px;
+            background: #1e90ff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1e90ff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #ccc;
         }
     </style>
 </head>
 <body>
+    <!-- Loader -->
     <div id="loader">
-        <div class="loading-text">Loading, please wait...</div>
+        <div id="loader-text">Connecting to Server</div>
         <div class="dots">
             <div class="dot"></div>
             <div class="dot"></div>
@@ -175,17 +217,47 @@
         </div>
     </div>
 
-    <div class="card" id="main-content">
-        <h1>Game Helper</h1>
-        <input type="text" placeholder="Enter Webhook URL" />
-        <input type="text" placeholder="Enter Script Code" />
-        <button>Submit</button>
+    <!-- Buttons Section -->
+    <div class="button-grid">
+        <button>
+            <img class="icon" src="discord-icon.png" alt="Discord"> Join Discord
+        </button>
+        <button>
+            <img class="icon" src="support-icon.png" alt="Support"> Contact Support
+        </button>
     </div>
 
-    <div class="discord-btn" onclick="window.open('https://discord.com', '_blank')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.385-.114-.956-.217-2.43.045-3.478.238-.987 1.53-6.63 1.53-6.63s-.39-.783-.39-1.94c0-1.816 1.05-3.176 2.36-3.176 1.114 0 1.653.836 1.653 1.837 0 1.12-.712 2.796-1.08 4.353-.308 1.292.653 2.345 1.937 2.345 2.324 0 3.89-3.068 3.89-6.705 0-2.793-1.872-4.886-5.277-4.886-3.84 0-6.236 2.864-6.236 6.08 0 1.108.336 1.89.872 2.492.244.278.28.39.191.71-.067.23-.217.792-.279 1.01-.092.346-.373.468-.687.341-1.924-.808-2.802-2.973-2.802-5.41 0-4.017 3.272-7.65 8.823-7.65 4.63 0 8.177 3.304 8.177 7.447 0 4.548-2.566 7.963-6.384 7.963-1.279 0-2.481-.693-2.892-1.477l-.788 3.005c-.238.916-.89 2.065-1.332 2.767 1.003.303 2.064.468 3.162.468 6.63 0 12-5.373 12-12S18.63 0 12 0z" />
-        </svg>
+    <!-- Notifications -->
+    <div class="notification" id="welcome-notification">
+        Welcome to the Enhanced Game Copier!
+        <button class="close-btn" onclick="closeNotification('welcome-notification')">X</button>
     </div>
+    <div class="notification" id="server-connecting-notification">
+        Connecting to Server...
+        <button class="close-btn" onclick="closeNotification('server-connecting-notification')">X</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">Version 1.0.0</div>
+
+    <script>
+        // Simulate loader
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('welcome-notification').classList.add('show');
+        }, 2000);
+
+        // Close notification
+        function closeNotification(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Show connecting notification
+        setTimeout(() => {
+            const connectingNotif = document.getElementById('server-connecting-notification');
+            connectingNotif.classList.add('show');
+            setTimeout(() => connectingNotif.style.display = 'none', 3000);
+        }, 3000);
+    </script>
 </body>
 </html>
