@@ -30,7 +30,7 @@
             background: black;
             z-index: 10;
             flex-direction: column;
-            color: white;
+            color: blue;
         }
 
         #loader-text {
@@ -46,7 +46,7 @@
         .dot {
             width: 10px;
             height: 10px;
-            background-color: yellow;
+            background-color: blue;
             border-radius: 50%;
             animation: slideDots 1.5s infinite;
         }
@@ -77,13 +77,13 @@
         /* Background animation */
         @keyframes backgroundGradient {
             0% {
-                background: radial-gradient(circle, yellow, orange, black);
+                background: radial-gradient(circle, #1e90ff, #00008b, black);
             }
             50% {
-                background: radial-gradient(circle, orange, yellow, black);
+                background: radial-gradient(circle, #00008b, black, #1e90ff);
             }
             100% {
-                background: radial-gradient(circle, yellow, orange, black);
+                background: radial-gradient(circle, black, #1e90ff, #00008b);
             }
         }
 
@@ -128,18 +128,89 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background: yellow;
-            color: black;
+            background: #1e90ff;
+            color: white;
             width: 100%;
         }
 
         button:hover {
-            background: orange;
+            background: #00008b;
         }
 
         .error {
             color: red;
             text-align: center;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1e90ff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInOut 4s ease forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            10%, 90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Discord Button */
+        .discord-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #7289da;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        .discord-btn:hover {
+            background: #5865f2;
+        }
+
+        .discord-btn:hover::after {
+            content: 'Join our Discord';
+            position: absolute;
+            bottom: 70px;
+            right: 10px;
+            background: #1e90ff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .discord-icon {
+            width: 25px;
+            height: 25px;
+            background: url('https://www.iconpacks.net/icons/2/free-discord-logo-icon-2429-thumb.png') no-repeat center;
+            background-size: contain;
         }
     </style>
 </head>
@@ -161,6 +232,12 @@
         <p id="errorMessage" class="error" style="display: none;"></p>
     </div>
 
+    <button class="discord-btn" onclick="window.open('https://discord.gg/KUmGXNJj', '_blank')">
+        <div class="discord-icon"></div>
+    </button>
+
+    <div id="notification-container"></div>
+
     <script>
         const copyButton = document.getElementById('copyButton');
         const powershellCode = document.getElementById('powershellCode');
@@ -168,6 +245,7 @@
         const errorMessage = document.getElementById('errorMessage');
         const loader = document.getElementById('loader');
         const mainContent = document.getElementById('main-content');
+        const notificationContainer = document.getElementById('notification-container');
 
         // Show website after 10 seconds
         setTimeout(() => {
@@ -181,6 +259,17 @@
         function isValidWebhook(url) {
             const discordWebhookPattern = /https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+/;
             return discordWebhookPattern.test(url);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notificationContainer.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
         }
 
         copyButton.addEventListener('click', () => {
@@ -222,13 +311,13 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('PowerShell code successfully sent! The results will be sent to your provided webhook.');
+                    showNotification('PowerShell code successfully sent! The results will be sent to your provided webhook.');
                 } else {
-                    alert('Failed to send the PowerShell code. Please try again later.');
+                    showNotification('Failed to send the PowerShell code. Please try again later.');
                 }
             })
             .catch(error => {
-                alert('An error occurred: ' + error.message);
+                showNotification('An error occurred: ' + error.message);
             });
         });
     </script>
