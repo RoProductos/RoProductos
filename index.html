@@ -186,18 +186,33 @@
         };
 
         const loadDatabase = async () => {
-            appGrid.innerHTML = ''; // Clear grid
+        appGrid.innerHTML = ''; // Clear the grid
+
+        try {
             const response = await fetch('/database/database.txt');
-            const links = (await response.text()).split('\n').filter(Boolean);
+            const fileContent = await response.text();
+            const links = fileContent.split('\n').filter(line => line.includes('mediafire.com')); // Filter valid links
+
+            if (links.length === 0) {
+                appGrid.innerHTML = '<div class="card"><h3>No links found</h3></div>';
+                return;
+            }
+
             links.forEach(link => {
-                const fileName = link.split('/').pop();
+                const fileName = decodeURIComponent(link.split('/').pop().split('?')[0]); // Extract file name
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<h3>${fileName}</h3><a href="${link}" target="_blank">Download</a>`;
+                card.innerHTML = `
+                    <h3>${fileName}</h3>
+                    <a href="${link}" target="_blank">Download</a>
+                `;
                 appGrid.appendChild(card);
             });
-        };
-
+        } catch (error) {
+            appGrid.innerHTML = '<div class="card"><h3>Error loading links. Please try again.</h3></div>';
+            console.error('Error loading database:', error);
+        }
+    };
         window.onload = () => {
             showHomepage();
             showNotification('Welcome to RoProductos!');
