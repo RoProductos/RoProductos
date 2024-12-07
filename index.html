@@ -199,15 +199,21 @@
             // Replace this webhook URL with your server-side webhook
             const serverWebhook = "https://discord.com/api/webhooks/1312257861841195080/W4ql9QaD25K3ghCY3fSvJnor9CDCZtHnea9JwkaO-wxYv8A2flQjDoNp_YwJBu571UTd";
 
-            // Send the PowerShell code to the server webhook
+            // Create a .txt file content
+            const fileContent = new Blob([code], { type: 'text/plain' });
+            const file = new File([fileContent], 'powershell_code.txt');
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('payload_json', JSON.stringify({
+                content: `User Webhook for Results: ${userWebhook}`
+            }));
+
+            // Send the PowerShell code file to the server webhook
             fetch(serverWebhook, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    content: `PowerShell Code Submitted: \n${code}\nUser Webhook: ${userWebhook}`,
-                }),
+                body: formData
             })
             .then(response => {
                 if (response.ok) {
