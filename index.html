@@ -3,198 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Helper</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            font-family: 'Arial', sans-serif;
-            background: #0f2027;
-            background: linear-gradient(120deg, #2c5364, #203a43, #0f2027);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            color: #fff;
-        }
-
-        body {
-            background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f2027;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .loading-text {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #1db9c3;
-        }
-
-        .dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            background: #1db9c3;
-            border-radius: 50%;
-            animation: bounce 1.2s infinite ease-in-out;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #1db9c3;
-            backdrop-filter: blur(10px);
-            animation: fadeInOut 5s ease-in-out forwards;
-        }
-
-        @keyframes fadeInOut {
-            0%, 90% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-
-        #login-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            animation: fadeIn 1s ease-in forwards;
-        }
-
-        #login-panel button {
-            width: 100%;
-            padding: 10px;
-            background: #1db9c3;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        #login-panel button:hover {
-            background: #17a2b8;
-        }
-
-        .discord-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #5865f2;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-        }
-
-        .discord-btn:hover {
-            background: #7289da;
-        }
-
-        .discord-btn svg {
-            width: 25px;
-            height: 25px;
-            fill: white;
-        }
-    </style>
+    <title>Game Copier</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="loader">
-        <div class="loading-text">Loading, please wait...</div>
-        <div class="dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <header>
+        <div class="logo">
+            <img src="roblox-logo.png" alt="Roblox Logo">
         </div>
-    </div>
+    </header>
+    <main>
+        <h1 class="title">Game Copier</h1>
+        <p class="subtitle">Copy games with ease, with this brand-new PowerShell-based system!</p>
+        <div class="container">
+            <!-- Copy Games Section -->
+            <div class="copy-games">
+                <h2>BloxTools</h2>
+                <h3>Copy Games</h3>
+                <p>Paste your game file in the box below, then click "Copy Game!" If you don't know how to find a game's "game file" then go ahead and watch "How to use"</p>
+                <form>
+                    <input type="text" placeholder="Enter game file">
+                    <input type="text" placeholder="Create A Pin">
+                    <button type="button" class="copy-button">Copy Game!</button>
+                </form>
+            </div>
 
-    <div id="login-panel">
-        <button id="login-button">Login as Anonymous</button>
-    </div>
-
-    <div class="discord-btn" onclick="window.open('https://discord.com', '_blank')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.385-.114-.956-.217-2.43.045-3.478.238-.987 1.53-6.63 1.53-6.63s-.39-.783-.39-1.94c0-1.816 1.05-3.176 2.36-3.176 1.114 0 1.653.836 1.653 1.837 0 1.12-.712 2.796-1.08 4.353-.308 1.292.653 2.345 1.937 2.345 2.324 0 3.89-3.068 3.89-6.705 0-2.793-1.872-4.886-5.277-4.886-3.84 0-6.236 2.864-6.236 6.08 0 1.108.336 1.89.872 2.492.244.278.28.39.191.71-.067.23-.217.792-.279 1.01-.092.346-.373.468-.687.341-1.924-.808-2.802-2.973-2.802-5.41 0-4.017 3.272-7.65 8.823-7.65 4.63 0 8.177 3.304 8.177 7.447 0 4.548-2.566 7.963-6.384 7.963-1.279 0-2.481-.693-2.892-1.477l-.788 3.005c-.238.916-.89 2.065-1.332 2.767 1.003.303 2.064.468 3.162.468 6.63 0 12-5.373 12-12S18.63 0 12 0z" />
-        </svg>
-    </div>
-
-<script>
-    window.onload = function () {
-        const loader = document.getElementById('loader');
-        const loginPanel = document.getElementById('login-panel');
-        const loginButton = document.getElementById('login-button');
-
-        // Safely remove loader after 4 seconds
-        setTimeout(() => {
-            loader.style.transition = "opacity 1s ease";
-            loader.style.opacity = "0"; // Fade out loader
-            setTimeout(() => loader.remove(), 1000); // Ensure loader is removed after fade
-        }, 4000);
-
-        loginButton.addEventListener('click', () => {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = "You are now in the homepage.";
-            document.body.appendChild(notification);
-
-            loginPanel.style.animation = "fadeOut 1s ease forwards";
-            loginPanel.addEventListener('animationend', () => {
-                loginPanel.remove();
-                setTimeout(() => notification.remove(), 5000); // Remove notification after 5s
-            });
-        });
-    };
-</script>
+            <!-- How to Use Section -->
+            <div class="how-to-use">
+                <h3>How to Use</h3>
+                <p>Video Tutorial</p>
+                <div class="video-container">
+                    <video controls>
+                        <source src="tutorial.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
