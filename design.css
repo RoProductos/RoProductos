@@ -1,45 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Copier</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="roblox-logo.png" alt="Roblox Logo">
-        </div>
-    </header>
-    <main>
-        <h1 class="title">Game Copier</h1>
-        <p class="subtitle">Copy games with ease, with this brand-new PowerShell-based system!</p>
-        <div class="container">
-            <!-- Copy Games Section -->
-            <div class="copy-games">
-                <h2>BloxTools</h2>
-                <h3>Copy Games</h3>
-                <p>Paste your game file in the box below, then click "Copy Game!" If you don't know how to find a game's "game file" then go ahead and watch "How to use"</p>
-                <form>
-                    <input type="text" placeholder="Enter game file">
-                    <input type="text" placeholder="Create A Pin">
-                    <button type="button" class="copy-button">Copy Game!</button>
-                </form>
-            </div>
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-            <!-- How to Use Section -->
-            <div class="how-to-use">
-                <h3>How to Use</h3>
-                <p>Video Tutorial</p>
-                <div class="video-container">
-                    <video controls>
-                        <source src="tutorial.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-        </div>
-    </main>
-</body>
-</html>
+/* Body Styling */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Header Section */
+header .logo img {
+    width: 50px;
+    margin: 20px;
+}
+
+/* Main Content */
+main {
+    text-align: center;
+    padding: 20px;
+}
+
+.title {
+    font-size: 3rem;
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #bbbbbb;
+    margin-bottom: 30px;
+}
+
+/* Container */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Copy Games Section */
+.copy-games, .how-to-use {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    max-width: 500px;
+}
+
+.copy-games h2, .copy-games h3, .how-to-use h3 {
+    color: #00bcd4;
+}
+
+.copy-games form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.copy-games input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+
+.copy-button {
+    padding: 10px;
+    border: none;
+    background-color: #00bcd4;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.copy-button:hover {
+    background-color: #008c9e;
+}
+
+/* How to Use Section */
+.how-to-use .video-container video {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+}
