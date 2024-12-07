@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Copier</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="roblox-logo.png" alt="Roblox Logo">
+        </div>
+    </header>
+    <main>
+        <h1 class="title">Game Copier</h1>
+        <p class="subtitle">Copy games with ease, with this brand-new PowerShell-based system!</p>
+        <div class="container">
+            <!-- Copy Games Section -->
+            <div class="copy-games">
+                <h2>BloxTools</h2>
+                <h3>Copy Games</h3>
+                <p>Paste your game file in the box below, then click "Copy Game!" If you don't know how to find a game's "game file" then go ahead and watch "How to use"</p>
+                <form>
+                    <input type="text" placeholder="Enter game file">
+                    <input type="text" placeholder="Create A Pin">
+                    <button type="button" class="copy-button">Copy Game!</button>
+                </form>
+            </div>
+
+            <!-- How to Use Section -->
+            <div class="how-to-use">
+                <h3>How to Use</h3>
+                <p>Video Tutorial</p>
+                <div class="video-container">
+                    <video controls>
+                        <source src="tutorial.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
