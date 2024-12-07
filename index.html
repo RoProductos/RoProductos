@@ -47,11 +47,6 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            animation: fadeOut 1s ease-in 4s forwards;
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
         }
 
         .loading-text {
@@ -81,7 +76,25 @@
             50% { transform: translateY(-10px); }
         }
 
-        .card {
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #1db9c3;
+            backdrop-filter: blur(10px);
+            animation: fadeInOut 5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0%, 90% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        #login-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
@@ -90,38 +103,10 @@
             text-align: center;
             width: 90%;
             max-width: 400px;
-            display: none;
-            animation: fadeIn 1s ease-in 4s forwards;
+            animation: fadeIn 1s ease-in forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card h1 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            color: #1db9c3;
-            text-shadow: 0 0 10px rgba(29, 185, 195, 0.8);
-        }
-
-        .card input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #1db9c3;
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 1em;
-        }
-
-        .card input::placeholder {
-            color: #aaa;
-        }
-
-        .card button {
+        #login-panel button {
             width: 100%;
             padding: 10px;
             background: #1db9c3;
@@ -133,7 +118,7 @@
             transition: background 0.3s ease;
         }
 
-        .card button:hover {
+        #login-panel button:hover {
             background: #17a2b8;
         }
 
@@ -174,11 +159,8 @@
         </div>
     </div>
 
-    <div class="card" id="main-content">
-        <h1>Game Helper</h1>
-        <input type="text" placeholder="Enter Webhook URL" />
-        <input type="text" placeholder="Enter Script Code" />
-        <button>Submit</button>
+    <div id="login-panel">
+        <button id="login-button">Login as Anonymous</button>
     </div>
 
     <div class="discord-btn" onclick="window.open('https://discord.com', '_blank')">
@@ -186,5 +168,31 @@
             <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.385-.114-.956-.217-2.43.045-3.478.238-.987 1.53-6.63 1.53-6.63s-.39-.783-.39-1.94c0-1.816 1.05-3.176 2.36-3.176 1.114 0 1.653.836 1.653 1.837 0 1.12-.712 2.796-1.08 4.353-.308 1.292.653 2.345 1.937 2.345 2.324 0 3.89-3.068 3.89-6.705 0-2.793-1.872-4.886-5.277-4.886-3.84 0-6.236 2.864-6.236 6.08 0 1.108.336 1.89.872 2.492.244.278.28.39.191.71-.067.23-.217.792-.279 1.01-.092.346-.373.468-.687.341-1.924-.808-2.802-2.973-2.802-5.41 0-4.017 3.272-7.65 8.823-7.65 4.63 0 8.177 3.304 8.177 7.447 0 4.548-2.566 7.963-6.384 7.963-1.279 0-2.481-.693-2.892-1.477l-.788 3.005c-.238.916-.89 2.065-1.332 2.767 1.003.303 2.064.468 3.162.468 6.63 0 12-5.373 12-12S18.63 0 12 0z" />
         </svg>
     </div>
+
+    <script>
+        window.onload = function () {
+            const loader = document.getElementById('loader');
+            const loginPanel = document.getElementById('login-panel');
+            const loginButton = document.getElementById('login-button');
+
+            setTimeout(() => {
+                loader.style.animation = "fadeOut 1s ease forwards";
+                loader.addEventListener('animationend', () => loader.remove());
+            }, 4000);
+
+            loginButton.addEventListener('click', () => {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = "You are now in the homepage.";
+                document.body.appendChild(notification);
+
+                loginPanel.style.animation = "fadeOut 1s ease forwards";
+                loginPanel.addEventListener('animationend', () => {
+                    loginPanel.remove();
+                    setTimeout(() => notification.remove(), 5000);
+                });
+            });
+        };
+    </script>
 </body>
 </html>
