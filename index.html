@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoProductos Dashboard</title>
     <style>
-        /* CSS Styles - No changes made here */
         :root {
             --primary: #1e293b;
             --secondary: #475569;
@@ -13,6 +12,7 @@
             --background: #0f172a;
             --light-mode-bg: #f1f5f9;
             --light-mode-text: #1e293b;
+            --card-bg: #334155;
         }
 
         body {
@@ -36,12 +36,19 @@
             background: var(--primary);
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: all 0.3s ease-in-out;
         }
 
         .sidebar h2 {
             color: var(--accent);
             margin-bottom: 10px;
             text-align: center;
+            font-size: 24px;
+            text-transform: uppercase;
         }
 
         .sidebar h4 {
@@ -51,27 +58,32 @@
             margin-bottom: 20px;
         }
 
-        .option {
+        .sidebar .option {
             margin-bottom: 15px;
-            padding: 10px;
+            padding: 12px 20px;
             background: var(--secondary);
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             text-align: center;
-            transition: background 0.3s;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            transition: all 0.3s ease-in-out;
         }
 
-        .option:hover {
+        .sidebar .option:hover {
             background: var(--accent);
+            transform: scale(1.05);
         }
 
         .content {
             width: 80%;
             padding: 20px;
             overflow-y: auto;
+            position: relative;
         }
 
-        .content .grid {
+        .grid {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -80,11 +92,22 @@
 
         .card {
             padding: 15px;
-            background: var(--secondary);
+            background: var(--card-bg);
             border-radius: 10px;
             width: calc(30% - 20px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
         .card.light-mode {
@@ -109,11 +132,27 @@
             font-size: 14px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             z-index: 1000;
-            transition: top 0.5s;
+            transition: top 0.5s ease-in-out;
         }
 
         .notification.show {
             top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background: #0078b8;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -129,7 +168,7 @@
         <div id="homepage" class="grid" style="display: none;">
             <div class="card">
                 <h3>About Us</h3>
-                <p>RoProductos provides tools to manage your Roblox assets.</p>
+                <p>RoProductos provides tools to manage your Roblox assets efficiently and effectively.</p>
             </div>
             <div class="card">
                 <h3>Contact Us</h3>
@@ -208,15 +247,14 @@
         const loadDatabase = async () => {
             appGrid.innerHTML = ''; // Clear the grid
 
-            // Update the URL below with the actual repository URL where your database.txt is located
-            const repoUrl = 'https://raw.githubusercontent.com/RoProductos/RoProductos/main/database/database.txt';
+            const repoUrl = 'https://raw.githubusercontent.com/your-username/your-repository/main/database/database.txt';
 
             try {
                 const response = await fetch(repoUrl);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                
+
                 const fileContent = await response.text();
-                const links = fileContent.split('\n').filter(line => line.includes('mediafire.com')); // Filter valid links
+                const links = fileContent.split('\n').filter(line => line.includes('mediafire.com'));
 
                 if (links.length === 0) {
                     appGrid.innerHTML = '<div class="card"><h3>No links found</h3></div>';
@@ -224,11 +262,11 @@
                 }
 
                 links.forEach(link => {
-                    const fileName = decodeURIComponent(link.split('/').pop().split('?')[0]); // Extract file name
+                    const name = decodeURIComponent(link.split('/file/')[1]?.split('/')[0] || 'Unnamed');
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h3>${fileName || 'Unnamed File'}</h3>
+                        <h3>${name}</h3>
                         <a href="${link}" target="_blank">Download</a>
                     `;
                     appGrid.appendChild(card);
