@@ -209,13 +209,24 @@
             }
         };
 
+        const extractFileName = (url) => {
+            try {
+                const filePath = url.split('/file/')[1];
+                if (!filePath) return 'Unnamed';
+                const [rawName] = filePath.split('/');
+                return decodeURIComponent(rawName.replace(/_/g, ' '));
+            } catch {
+                return 'Unnamed';
+            }
+        };
+
         const loadDatabase = async () => {
             try {
                 const response = await fetch('https://raw.githubusercontent.com/RoProductos/RoProductos/main/database/database.txt');
                 const text = await response.text();
                 const links = text.split('\n').filter(link => link.includes('mediafire.com'));
                 databaseContainer.innerHTML = links.map(link => {
-                    const name = decodeURIComponent(link.split('/file/')[1]?.split('/')[0] || 'Unnamed');
+                    const name = extractFileName(link);
                     return `<div class="card">
                                 <h3>${name}</h3>
                                 <button onclick="window.open('${link}', '_blank')">Download</button>
