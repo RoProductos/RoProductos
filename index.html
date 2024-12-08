@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoProductos Dashboard</title>
     <style>
+        /* CSS Styles - No changes made here */
         :root {
             --primary: #1e293b;
             --secondary: #475569;
@@ -207,10 +208,15 @@
         const loadDatabase = async () => {
             appGrid.innerHTML = ''; // Clear the grid
 
+            // Update the URL below with the actual repository URL where your database.txt is located
+            const repoUrl = 'https://raw.githubusercontent.com/RoProductos/RoProductos/main/database/database.txt';
+
             try {
-                const response = await fetch('/database/database.txt');
+                const response = await fetch(repoUrl);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                
                 const fileContent = await response.text();
-                const links = fileContent.split('\n').filter(line => line.includes('https://www.mediafire.com/file/')); // Filter valid links
+                const links = fileContent.split('\n').filter(line => line.includes('mediafire.com')); // Filter valid links
 
                 if (links.length === 0) {
                     appGrid.innerHTML = '<div class="card"><h3>No links found</h3></div>';
@@ -222,7 +228,7 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h3>${fileName}</h3>
+                        <h3>${fileName || 'Unnamed File'}</h3>
                         <a href="${link}" target="_blank">Download</a>
                     `;
                     appGrid.appendChild(card);
