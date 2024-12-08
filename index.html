@@ -75,7 +75,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .card {
@@ -124,7 +124,7 @@
         <h4 id="user-ip">Fetching IP...</h4>
         <div class="option" onclick="showHomepage()">Homepage</div>
         <div class="option" onclick="showAdminPanel()">Admin Panel</div>
-        <div class="option" onclick="showApp()">Database</div>
+        <div class="option" onclick="showApp()">RoProductos - LeaksApp</div>
     </div>
     <div class="content">
         <div id="homepage" class="grid" style="display: none;">
@@ -152,7 +152,7 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        const adminIP = " 45.247.74.147"; // Replace with your IP
+        const adminIP = "45.247.74.147"; // Replace with your public IP
         const notification = document.getElementById('notification');
         const homepage = document.getElementById('homepage');
         const adminPanel = document.getElementById('admin-panel');
@@ -216,7 +216,10 @@
                 const links = text.split('\n').filter(link => link.includes('mediafire.com'));
                 databaseContainer.innerHTML = links.map(link => {
                     const name = decodeURIComponent(link.split('/file/')[1]?.split('/')[0] || 'Unnamed');
-                    return `<div class="card"><h3>${name}</h3><a href="${link}" target="_blank">Download</a></div>`;
+                    return `<div class="card">
+                                <h3>${name}</h3>
+                                <button onclick="window.open('${link}', '_blank')">Download</button>
+                            </div>`;
                 }).join('');
             } catch (error) {
                 databaseContainer.innerHTML = `<div class="card"><h3>Error loading database.</h3></div>`;
