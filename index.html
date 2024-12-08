@@ -210,7 +210,7 @@
             try {
                 const response = await fetch('/database/database.txt');
                 const fileContent = await response.text();
-                const links = fileContent.split('\n').filter(line => line.includes('mediafire.com')); // Filter valid links
+                const links = fileContent.split('\n').filter(line => line.includes('https://www.mediafire.com/file/')); // Filter valid links
 
                 if (links.length === 0) {
                     appGrid.innerHTML = '<div class="card"><h3>No links found</h3></div>';
