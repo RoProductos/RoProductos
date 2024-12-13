@@ -14,6 +14,62 @@
             --card-bg: #334155;
         }
 
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-text {
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: dot-animation 1.4s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dot-animation {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Your existing styles */
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
@@ -142,7 +198,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -162,6 +217,16 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-text">Connecting to Server</div>
+        <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
     <div class="sidebar">
         <div class="logo-section">
             <h2>RoProductos</h2>
@@ -314,8 +379,17 @@
         };
 
         window.onload = () => {
-            showHomepage();
-            fetchUserIP();
+            // Show loading screen first
+            setTimeout(() => {
+                // Fade out loading screen
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    // Hide loading screen and initialize app
+                    document.getElementById('loading-screen').style.display = 'none';
+                    showHomepage();
+                    fetchUserIP();
+                }, 500);
+            }, 2000); // Show loading screen for 2 seconds
         };
     </script>
 </body>
